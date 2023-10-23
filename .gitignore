@@ -24,7 +24,7 @@ target/
 .idea/shelf/
 
 # Project-specific settings (substitute with your project name)
-# .idea/<project-name>.iml
+.idea/ReebeloCaseStudyWebsite.iml
 
 # .DS_Store (if you're using macOS)
 .DS_Store
