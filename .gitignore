@@ -1,0 +1,34 @@
+# IntelliJ IDEA
+.idea/
+
+# Compiled files
+out/
+target/
+
+# Dependency directories
+.idea_modules/
+.ideaLibs/
+
+# Editor-specific files
+*.iml
+*.ipr
+*.iws
+
+# Log files
+*.log
+
+# User-specific files
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries/
+.idea/shelf/
+
+# Project-specific settings (substitute with your project name)
+# .idea/<project-name>.iml
+
+# .DS_Store (if you're using macOS)
+.DS_Store
+
+# Maven specific files
+log/
+target/
