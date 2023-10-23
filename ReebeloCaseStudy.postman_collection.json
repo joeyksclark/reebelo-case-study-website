@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "e8d23cda-6abd-46e2-8e0b-03d8772b0597",
+		"name": "ReebeloCaseStudy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13672842"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verify GET /api/products endpoint",
+							"",
+							"// Check the response status code (should be 200 OK)",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Check if the response is valid JSON",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"// Check if the response contains an array of products",
+							"pm.test(\"Response contains products\", function () {",
+							"    // Parse the response JSON data",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    // Check if jsonData is an array",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"",
+							"    // TODO add more specific checks",
+							"    if (jsonData.length > 0) {",
+							"        pm.expect(jsonData[0]).to.have.property('id');",
+							"        pm.expect(jsonData[0]).to.have.property('name');",
+							"        pm.expect(jsonData[0]).to.have.property('price');",
+							"        pm.expect(jsonData[0]).to.have.property('stockQuantity');",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
