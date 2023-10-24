@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 // TODO Mocked product data (replace with actual database or data source)
 let products = [
-  { id: 1, name: 'Product 1', price: 10.99, stockQuantity: 100 },
-  { id: 2, name: 'Product 2', price: 19.99, stockQuantity: 50 },
+  { id: 1, name: 'Product 1', price: 10.99, quantity: 100 },
+  { id: 2, name: 'Product 2', price: 19.99, quantity: 50 },
 ];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -14,9 +14,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     } else if (req.method === 'POST') {
       // Create or update a product
-      const { id, name, price, stockQuantity } = req.body;
+      const { id, name, price, quantity } = req.body;
 
-      validateInput(name, price, stockQuantity);
+      validateInput(name, price, quantity);
 
       // Check if the product already exists by ID
       const existingProduct = getAllProducts().find((product) => product.id === id);
@@ -39,8 +39,8 @@ const getAllProducts = () => {
   return products;
 }
 
-const validateInput = (name: string, price: number, stockQuantity: number) => {
-  if (!name || !price || !stockQuantity) {
+const validateInput = (name: string, price: number, quantity: number) => {
+  if (!name || !price || !quantity) {
     throw new Error('Invalid input data');
   }
 }
@@ -48,13 +48,13 @@ const validateInput = (name: string, price: number, stockQuantity: number) => {
 const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // Extract the product data from the request body
-    const { name, price, stockQuantity } = req.body;
+    const { name, price, quantity } = req.body;
 
     const newProduct = {
       id: products.length + 1,
       name,
       price,
-      stockQuantity,
+      quantity,
     };
     products.push(newProduct);
 
@@ -66,11 +66,11 @@ const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
 
 const updateProduct = (req: NextApiRequest, res: NextApiResponse, existingProduct: any) => {
   try {
-    const { name, price, stockQuantity } = req.body;
+    const { name, price, quantity } = req.body;
 
     existingProduct.name = name;
     existingProduct.price = price;
-    existingProduct.stockQuantity = stockQuantity;
+    existingProduct.quantity = quantity;
 
     // Respond with the updated product
     res.status(200).json(getAllProducts());
