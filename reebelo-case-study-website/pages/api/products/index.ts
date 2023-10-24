@@ -1,4 +1,4 @@
-import { getAllProducts } from '../productUtils';
+import {findProductById, getAllProducts} from '../productUtils';
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -9,10 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       res.status(200).json(getAllProducts());
 
     } else if (req.method === 'POST') {
-      // Create or update a product
-      const { name, price, quantity } = req.body;
-
-      validateInput(name, price, quantity);
+      // Create a product
       createProduct(req, res);
 
     } else {
@@ -33,8 +30,9 @@ const validateInput = (name: string, price: number, quantity: number) => {
 const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { name, price, quantity } = req.body;
-    let products = getAllProducts()
+    validateInput(name, price, quantity);
 
+    let products = getAllProducts()
     const newProduct = {
       id: getAllProducts.length + 1,
       name,
@@ -43,7 +41,7 @@ const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
     };
     products.push(newProduct);
 
-    res.status(201).json(getAllProducts());
+    res.status(201).json(newProduct);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
