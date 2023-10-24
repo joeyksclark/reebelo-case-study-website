@@ -7,13 +7,13 @@
 	},
 	"item": [
 		{
-			"name": "Products",
+			"name": "Get Products",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Verify GET /api/products endpoint",
+							"// Verify GET /api/products endpoint gets all products",
 							"",
 							"// Check the response status code (should be 200 OK)",
 							"pm.test(\"Status code is 200\", function () {",
@@ -50,6 +50,143 @@
 			"request": {
 				"method": "GET",
 				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verify POST /api/products endpoint creates a new product",
+							"",
+							"const newProduct = {",
+							"    name: \"New Product\",",
+							"    price: 25.99,",
+							"    stockQuantity: 50",
+							"}; ",
+							"",
+							"// Check the response status code (should be 201 Created for successful creation)",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"// Check if the response is valid JSON",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"// Verify that the response contains the created product data except for the 'id' field",
+							"pm.test(\"Response contains the created product (excluding 'id')\", function () {",
+							"    const responseBody = pm.response.json();",
+							"    let responseWithoutId = responseBody;",
+							"",
+							"    // Remove the 'id' field from the response for comparison",
+							"    responseWithoutId.forEach((obj) => {",
+							"        delete obj.id;",
+							"    });",
+							"",
+							"    pm.expect(responseWithoutId).to.deep.include(newProduct);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"name\": \"New Product\", \"price\": 25.99, \"stockQuantity\": 50 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verify POST /api/products endpoint updates an existing product",
+							"",
+							"const updatedProduct = { ",
+							"    id: 1, ",
+							"    name: \"Updated Product 1\", ",
+							"    price: 12.99, ",
+							"    stockQuantity: 99 ",
+							"};",
+							"",
+							"// Verify that the response status code is as expected (200 OK)",
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Verify that the response is valid JSON",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"// Verify that the response contains the updated product data",
+							"pm.test(\"Response contains the updated product data\", function () {",
+							"    const responseBody = pm.response.json();",
+							"",
+							"    // Compare the response with the updated product data",
+							"    pm.expect(responseBody).to.deep.include(updatedProduct);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"id\": 1, \"name\": \"Updated Product 1\", \"price\": 12.99, \"stockQuantity\": 99 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:3000/api/products",
 					"protocol": "http",
