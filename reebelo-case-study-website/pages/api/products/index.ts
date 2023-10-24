@@ -1,10 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { findProductById, getAllProducts } from '../productUtils';
 
-// TODO Mocked product data (replace with actual database or data source)
-let products = [
-  { id: 1, name: 'Product 1', price: 10.99, quantity: 100 },
-  { id: 2, name: 'Product 2', price: 19.99, quantity: 50 },
-];
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -19,7 +15,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       validateInput(name, price, quantity);
 
       // Check if the product already exists by ID
-      const existingProduct = getAllProducts().find((product) => product.id === id);
+      const existingProduct = findProductById(id);
 
       if (existingProduct) {
         updateProduct(req, res, existingProduct);
@@ -35,10 +31,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-const getAllProducts = () => {
-  return products;
-}
-
 const validateInput = (name: string, price: number, quantity: number) => {
   if (!name || !price || !quantity) {
     throw new Error('Invalid input data');
@@ -47,11 +39,11 @@ const validateInput = (name: string, price: number, quantity: number) => {
 
 const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    // Extract the product data from the request body
     const { name, price, quantity } = req.body;
+    let products = getAllProducts()
 
     const newProduct = {
-      id: products.length + 1,
+      id: getAllProducts.length + 1,
       name,
       price,
       quantity,
@@ -72,7 +64,6 @@ const updateProduct = (req: NextApiRequest, res: NextApiResponse, existingProduc
     existingProduct.price = price;
     existingProduct.quantity = quantity;
 
-    // Respond with the updated product
     res.status(200).json(getAllProducts());
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
