@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {findProductById} from "../productUtils";
+import { findProductById } from "../productUtils";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -20,7 +20,13 @@ const getProduct = (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const productId = parseInt(req.query.productId as string, 10);
         const existingProduct = findProductById(productId);
-        res.status(200).json(existingProduct);
+
+        if (existingProduct) {
+            res.status(200).json(existingProduct);
+        } else {
+            res.status(404).end();
+        }
+
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

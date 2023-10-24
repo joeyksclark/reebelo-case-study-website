@@ -7,356 +7,489 @@
 	},
 	"item": [
 		{
-			"name": "Get Products",
-			"event": [
+			"name": "Products",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Verify GET /api/products endpoint gets all products",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Response is valid JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"Response contains products\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.be.an('array');",
-							"    pm.expect(jsonData.length).to.be.greaterThan(0);",
-							"",
-							"    pm.expect(jsonData[0]).to.have.property('id');",
-							"    pm.expect(jsonData[0]).to.have.property('name');",
-							"    pm.expect(jsonData[0]).to.have.property('price');",
-							"    pm.expect(jsonData[0]).to.have.property('quantity');",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/products",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"products"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Products",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Verify POST /api/products endpoint creates a new product",
-							"",
-							"const newProduct = {",
-							"    name: \"New Product\",",
-							"    price: 25.99,",
-							"    quantity: 50",
-							"}; ",
-							"",
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});",
-							"",
-							"pm.test(\"Response is valid JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"Response contains the created product (excluding 'id')\", function () {",
-							"    const responseBody = pm.response.json();",
-							"",
-							"    pm.expect(responseBody.id).not.to.be.null;",
-							"    pm.expect(responseBody.name).to.equal(\"New Product\");",
-							"    pm.expect(responseBody.price).to.equal(25.99);",
-							"    pm.expect(responseBody.quantity).to.equal(50);",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{ \"name\": \"New Product\", \"price\": 25.99, \"quantity\": 50 }",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Get Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify GET /api/products endpoint gets all products",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Response contains products\", function () {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"    pm.expect(jsonData.length).to.be.greaterThan(0);",
+									"",
+									"    pm.expect(jsonData[0]).to.have.property('id');",
+									"    pm.expect(jsonData[0]).to.have.property('name');",
+									"    pm.expect(jsonData[0]).to.have.property('price');",
+									"    pm.expect(jsonData[0]).to.have.property('quantity');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/products",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"api",
-						"products"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Product by Id",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Verify GET /api/products/[productId] endpoint gets product",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Response is valid JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"GET /api/product/[productId] returns a product\", function () {",
-							"    const responseBody = pm.response.json();",
-							"",
-							"    pm.expect(responseBody).to.have.property(\"id\").equals(1);",
-							"    pm.expect(responseBody).to.have.property(\"name\");",
-							"    pm.expect(responseBody).to.have.property(\"price\");",
-							"    pm.expect(responseBody).to.have.property(\"quantity\");",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/products/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"products",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Put Product by Id",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Verify PUT /api/products/[productId] endpoint updates product",
-							"",
-							"const updatedProduct = {",
-							"    id: 1,",
-							"    name: \"Updated Product 1\",",
-							"    price: 12.99,",
-							"    quantity: 99",
-							"}; ",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Response is valid JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"PUT /api/product/[productId] returns an updated product\", function () {",
-							"    const responseBody = pm.response.json();",
-							"    pm.expect(responseBody).to.deep.equal(updatedProduct);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{ \"name\": \"Updated Product 1\", \"price\": 12.99, \"quantity\": 99 }",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/api/products/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"products",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Orders",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Verify GET /api/orders endpoint gets all orders",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Response is valid JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"Response contains orders\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.be.an('array');",
-							"    pm.expect(jsonData.length).to.be.greaterThan(0);",
-							"",
-							"    pm.expect(jsonData[0]).to.have.property(\"orderId\");",
-							"    pm.expect(jsonData[0]).to.have.property(\"orderItems\");",
-							"    pm.expect(jsonData[0]).to.have.property(\"customerName\");",
-							"    pm.expect(jsonData[0]).to.have.property(\"totalPrice\");",
-							"    pm.expect(jsonData[0]).to.have.property(\"status\");",
-							"    pm.expect(jsonData[0]).to.have.property(\"shipping\");",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"orders"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Orders",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Verify POST /api/orders endpoint creates a new order",
-							"",
-							"const newOrder = {",
-							"    name: \"Lovely Customer\",",
-							"    orderItems: [",
-							"        { productId: 1, quantity: 2 },",
-							"        { productId: 2, quantity: 1 }",
-							"    ]",
-							"}; ",
-							"",
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});",
-							"",
-							"pm.test(\"Response is valid JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"Response contains the created product (excluding 'id')\", function () {",
-							"    const responseBody = pm.response.json();",
-							"",
-							"    pm.expect(responseBody).to.have.property(\"orderId\");",
-							"    pm.expect(responseBody).to.have.property(\"orderItems\");",
-							"    pm.expect(responseBody).to.have.property(\"customerName\");",
-							"    pm.expect(responseBody).to.have.property(\"totalPrice\");",
-							"    pm.expect(responseBody).to.have.property(\"status\");",
-							"    pm.expect(responseBody).to.have.property(\"shipping\");",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"customerName\": \"Lovely Customer\",\n    \"orderItems\": [\n        { \"productId\": 1, \"quantityOrdered\": 2 },\n        { \"productId\": 2, \"quantityOrdered\": 1 }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Create Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify POST /api/products endpoint creates a new product",
+									"",
+									"const newProduct = {",
+									"    name: \"New Product\",",
+									"    price: 25.99,",
+									"    quantity: 50",
+									"}; ",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Response contains the created product\", function () {",
+									"    const responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody.id).not.to.be.null;",
+									"    pm.expect(responseBody.name).to.equal(\"New Product\");",
+									"    pm.expect(responseBody.price).to.equal(25.99);",
+									"    pm.expect(responseBody.quantity).to.equal(50);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"api",
-						"orders"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\": \"New Product\", \"price\": 25.99, \"quantity\": 50 }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify GET /api/products/[productId] endpoint gets product",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"GET /api/products/[productId] returns a product\", function () {",
+									"    const responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.have.property(\"id\").equals(1);",
+									"    pm.expect(responseBody).to.have.property(\"name\");",
+									"    pm.expect(responseBody).to.have.property(\"price\");",
+									"    pm.expect(responseBody).to.have.property(\"quantity\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Product by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify PUT /api/products/[productId] endpoint updates product",
+									"",
+									"const updatedProduct = {",
+									"    id: 1,",
+									"    name: \"Updated Product 1\",",
+									"    price: 12.99,",
+									"    quantity: 99",
+									"}; ",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"PUT /api/products/[productId] returns an updated product\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody).to.deep.equal(updatedProduct);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\": \"Updated Product 1\", \"price\": 12.99, \"quantity\": 99 }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Get Order by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify GET /api/orders/[orderId] endpoint gets order",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"GET /api/orders/[orderId] returns an order\", function () {",
+									"    const responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.have.property(\"orderId\");",
+									"    pm.expect(responseBody).to.have.property(\"orderItems\");",
+									"    pm.expect(responseBody).to.have.property(\"customerName\");",
+									"    pm.expect(responseBody).to.have.property(\"totalPrice\");",
+									"    pm.expect(responseBody).to.have.property(\"status\");",
+									"    pm.expect(responseBody).to.have.property(\"shipping\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/orders/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify GET /api/orders endpoint gets all orders",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Response contains orders\", function () {",
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"    pm.expect(jsonData.length).to.be.greaterThan(0);",
+									"",
+									"    pm.expect(jsonData[0]).to.have.property(\"orderId\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"orderItems\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"customerName\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"totalPrice\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"status\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"shipping\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify POST /api/orders endpoint creates a new order",
+									"",
+									"const newOrder = {",
+									"    name: \"Lovely Customer\",",
+									"    orderItems: [",
+									"        { productId: 1, quantity: 2 },",
+									"        { productId: 2, quantity: 1 }",
+									"    ]",
+									"}; ",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Response contains the created order\", function () {",
+									"    const responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.have.property(\"orderId\");",
+									"    pm.expect(responseBody).to.have.property(\"orderItems\");",
+									"    pm.expect(responseBody).to.have.property(\"customerName\");",
+									"    pm.expect(responseBody).to.have.property(\"totalPrice\");",
+									"    pm.expect(responseBody).to.have.property(\"status\");",
+									"    pm.expect(responseBody).to.have.property(\"shipping\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerName\": \"Lovely Customer\",\n    \"orderItems\": [\n        { \"productId\": 1, \"quantityOrdered\": 2 },\n        { \"productId\": 2, \"quantityOrdered\": 1 }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Order by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify PUT /api/orders/[orderId] endpoint updates order",
+									"",
+									"const updatedOrder = {",
+									"    orderId: 1,",
+									"    orderItems: [",
+									"        { productId: 1, quantityOrdered: 2 },",
+									"        { productId: 2, quantityOrdered: 1 }",
+									"    ],",
+									"    customerName: \"Joey\",",
+									"    totalPrice: 0,",
+									"    status: \"Shipped\",",
+									"    shipping: {",
+									"        trackingCompany: \"New Shipping Company\",",
+									"        trackingNumber: \"123\"",
+									"    }",
+									"};",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"PUT /api/orders/[orderId] returns an updated order\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody).to.deep.equal(updatedOrder);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"status\": \"Shipped\",\n    \"shipping\": {\n        \"trackingCompany\": \"New Shipping Company\",\n        \"trackingNumber\": \"123\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/orders/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
