@@ -53,15 +53,15 @@ const createOrder = (req: NextApiRequest, res: NextApiResponse) => {
 const calculateTotalCost = (orderItems: any) => {
     let totalCost = 0;
 
-    orderItems.forEach((orderItem: { productId: number; quantityOrdered: number; }) => {
-        const { productId, quantityOrdered } = orderItem;
+    orderItems.forEach((orderItem: { productId: number; orderQuantity: number; }) => {
+        const { productId, orderQuantity } = orderItem;
         const product = findProductById(productId);
         if (product) {
-            if (quantityOrdered <= product.quantity) {
-                totalCost += product.price * quantityOrdered;
+            if (orderQuantity <= product.stockQuantity) {
+                totalCost += product.price * orderQuantity;
             } else {
                 throw new Error(`Not enough of ${product.name} in stock. ` +
-                    `You ordered ${quantityOrdered}, but there are only ${product.quantity}.`)
+                    `You ordered ${orderQuantity}, but there are only ${product.stockQuantity}.`)
             }
         } else {
             throw new Error(`The product ordered does not exist (productId: ${productId}).`)

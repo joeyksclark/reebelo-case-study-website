@@ -1,4 +1,4 @@
-import {findProductById, getAllProducts} from '../productUtils';
+import { getAllProducts } from '../productUtils';
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -21,23 +21,23 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-const validateInput = (name: string, price: number, quantity: number) => {
-  if (!name || !price || !quantity) {
+const validateInput = (name: string, price: number, stockQuantity: number) => {
+  if (!name || !price || !stockQuantity) {
     throw new Error('Invalid input data');
   }
 }
 
 const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { name, price, quantity } = req.body;
-    validateInput(name, price, quantity);
+    const { name, price, stockQuantity } = req.body;
+    validateInput(name, price, stockQuantity);
 
     let products = getAllProducts()
     const newProduct = {
-      id: getAllProducts.length + 1,
+      productId: getAllProducts.length + 1,
       name,
       price,
-      quantity,
+      stockQuantity,
     };
     products.push(newProduct);
 

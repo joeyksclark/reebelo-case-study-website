@@ -34,7 +34,7 @@ const getProduct = (req: NextApiRequest, res: NextApiResponse) => {
 
 const updateProduct = (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const { name, price, quantity } = req.body;
+        const { name, price, stockQuantity } = req.body;
 
         const productId = parseInt(req.query.productId as string, 10);
         const existingProduct = findProductById(productId);
@@ -42,7 +42,7 @@ const updateProduct = (req: NextApiRequest, res: NextApiResponse) => {
         if (existingProduct) {
             existingProduct.name = name;
             existingProduct.price = price;
-            existingProduct.quantity = quantity;
+            existingProduct.stockQuantity = stockQuantity;
 
             res.status(200).json(existingProduct);
         } else {

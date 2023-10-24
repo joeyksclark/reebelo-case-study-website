@@ -32,10 +32,10 @@
 									"    pm.expect(jsonData).to.be.an('array');",
 									"    pm.expect(jsonData.length).to.be.greaterThan(0);",
 									"",
-									"    pm.expect(jsonData[0]).to.have.property('id');",
+									"    pm.expect(jsonData[0]).to.have.property('productId');",
 									"    pm.expect(jsonData[0]).to.have.property('name');",
 									"    pm.expect(jsonData[0]).to.have.property('price');",
-									"    pm.expect(jsonData[0]).to.have.property('quantity');",
+									"    pm.expect(jsonData[0]).to.have.property('stockQuantity');",
 									"});",
 									""
 								],
@@ -73,7 +73,7 @@
 									"const newProduct = {",
 									"    name: \"New Product\",",
 									"    price: 25.99,",
-									"    quantity: 50",
+									"    stockQuantity: 50",
 									"}; ",
 									"",
 									"pm.test(\"Status code is 201\", function () {",
@@ -87,10 +87,10 @@
 									"pm.test(\"Response contains the created product\", function () {",
 									"    const responseBody = pm.response.json();",
 									"",
-									"    pm.expect(responseBody.id).not.to.be.null;",
+									"    pm.expect(responseBody.productId).not.to.be.null;",
 									"    pm.expect(responseBody.name).to.equal(\"New Product\");",
 									"    pm.expect(responseBody.price).to.equal(25.99);",
-									"    pm.expect(responseBody.quantity).to.equal(50);",
+									"    pm.expect(responseBody.stockQuantity).to.equal(50);",
 									"});",
 									"",
 									""
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"name\": \"New Product\", \"price\": 25.99, \"quantity\": 50 }",
+							"raw": "{ \"name\": \"New Product\", \"price\": 25.99, \"stockQuantity\": 50 }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -146,10 +146,10 @@
 									"pm.test(\"GET /api/products/[productId] returns a product\", function () {",
 									"    const responseBody = pm.response.json();",
 									"",
-									"    pm.expect(responseBody).to.have.property(\"id\").equals(1);",
+									"    pm.expect(responseBody).to.have.property(\"productId\").equals(1);",
 									"    pm.expect(responseBody).to.have.property(\"name\");",
 									"    pm.expect(responseBody).to.have.property(\"price\");",
-									"    pm.expect(responseBody).to.have.property(\"quantity\");",
+									"    pm.expect(responseBody).to.have.property(\"stockQuantity\");",
 									"});",
 									""
 								],
@@ -186,10 +186,10 @@
 									"// Verify PUT /api/products/[productId] endpoint updates product",
 									"",
 									"const updatedProduct = {",
-									"    id: 1,",
+									"    productId: 1,",
 									"    name: \"Updated Product 1\",",
 									"    price: 12.99,",
-									"    quantity: 99",
+									"    stockQuantity: 99",
 									"}; ",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
@@ -215,7 +215,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"name\": \"Updated Product 1\", \"price\": 12.99, \"quantity\": 99 }",
+							"raw": "{ \"name\": \"Updated Product 1\", \"price\": 12.99, \"stockQuantity\": 99 }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -361,8 +361,8 @@
 									"const newOrder = {",
 									"    name: \"Lovely Customer\",",
 									"    orderItems: [",
-									"        { productId: 1, quantity: 2 },",
-									"        { productId: 2, quantity: 1 }",
+									"        { productId: 1, orderQuantity: 2 },",
+									"        { productId: 2, orderQuantity: 1 }",
 									"    ]",
 									"}; ",
 									"",
@@ -396,7 +396,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"customerName\": \"Lovely Customer\",\n    \"orderItems\": [\n        { \"productId\": 1, \"quantityOrdered\": 2 },\n        { \"productId\": 2, \"quantityOrdered\": 1 }\n    ]\n}",
+							"raw": "{\n    \"customerName\": \"Lovely Customer\",\n    \"orderItems\": [\n        { \"productId\": 1, \"orderQuantity\": 2 },\n        { \"productId\": 2, \"orderQuantity\": 1 }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -430,8 +430,8 @@
 									"const updatedOrder = {",
 									"    orderId: 1,",
 									"    orderItems: [",
-									"        { productId: 1, quantityOrdered: 2 },",
-									"        { productId: 2, quantityOrdered: 1 }",
+									"        { productId: 1, orderQuantity: 2 },",
+									"        { productId: 2, orderQuantity: 1 }",
 									"    ],",
 									"    customerName: \"Joey\",",
 									"    totalPrice: 0,",

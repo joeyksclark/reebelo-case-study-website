@@ -3,8 +3,8 @@ let orders = [
     {
         orderId: 1,
         orderItems: [
-            { productId: 1, quantityOrdered: 2 },
-            { productId: 2, quantityOrdered: 1 }
+            { productId: 1, orderQuantity: 2 },
+            { productId: 2, orderQuantity: 1 }
         ],
         customerName: "Joey",
         totalPrice: 0,
@@ -14,8 +14,8 @@ let orders = [
     {
         orderId: 2,
         orderItems: [
-            { productId: 1, quantityOrdered: 2 },
-            { productId: 2, quantityOrdered: 1 }
+            { productId: 1, orderQuantity: 2 },
+            { productId: 2, orderQuantity: 1 }
         ],
         customerName: "Nina",
         totalPrice: 0,
@@ -28,8 +28,8 @@ let orders = [
     {
         orderId: 3,
         orderItems: [
-            { productId: 1, quantityOrdered: 3 },
-            { productId: 2, quantityOrdered: 2 }
+            { productId: 1, orderQuantity: 3 },
+            { productId: 2, orderQuantity: 2 }
         ],
         customerName: "Marika",
         totalPrice: 0,
@@ -42,7 +42,7 @@ let orders = [
     {
         orderId: 4,
         orderItems: [
-            { productId: 1, quantity: 1 }
+            { productId: 1, orderQuantity: 1 }
         ],
         customerName: "Caitlin",
         totalPrice: 0,
