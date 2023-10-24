@@ -1,4 +1,4 @@
-import { findProductById, getAllProducts } from '../productUtils';
+import { getAllProducts } from '../productUtils';
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -10,18 +10,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     } else if (req.method === 'POST') {
       // Create or update a product
-      const { id, name, price, quantity } = req.body;
+      const { name, price, quantity } = req.body;
 
       validateInput(name, price, quantity);
+      createProduct(req, res);
 
-      // Check if the product already exists by ID
-      const existingProduct = findProductById(id);
-
-      if (existingProduct) {
-        updateProduct(req, res, existingProduct);
-      } else {
-        createProduct(req, res)
-      }
     } else {
       // Method Not Allowed
       res.status(405).end();
@@ -51,20 +44,6 @@ const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
     products.push(newProduct);
 
     res.status(201).json(getAllProducts());
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-const updateProduct = (req: NextApiRequest, res: NextApiResponse, existingProduct: any) => {
-  try {
-    const { name, price, quantity } = req.body;
-
-    existingProduct.name = name;
-    existingProduct.price = price;
-    existingProduct.quantity = quantity;
-
-    res.status(200).json(getAllProducts());
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
