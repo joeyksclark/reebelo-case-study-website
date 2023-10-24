@@ -8,6 +8,9 @@ target/
 # Dependency directories
 .idea_modules/
 .ideaLibs/
+/node_modules
+/.pnp
+.pnp.js
 
 # Editor-specific files
 *.iml
@@ -23,12 +26,14 @@ target/
 .idea/dictionaries/
 .idea/shelf/
 
-# Project-specific settings (substitute with your project name)
+# Project-specific settings
 .idea/ReebeloCaseStudyWebsite.iml
 
 # .DS_Store (if you're using macOS)
 .DS_Store
 
-# Maven specific files
-log/
-target/
+# next.js
+/.next/
+/out/
+*.tsbuildinfo
+next-env.d.ts
