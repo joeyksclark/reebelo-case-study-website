@@ -27,13 +27,12 @@
 							"    const jsonData = pm.response.json();",
 							"",
 							"    pm.expect(jsonData).to.be.an('array');",
+							"    pm.expect(jsonData.length).to.be.greaterThan(0);",
 							"",
-							"    if (jsonData.length > 0) {",
-							"        pm.expect(jsonData[0]).to.have.property('id');",
-							"        pm.expect(jsonData[0]).to.have.property('name');",
-							"        pm.expect(jsonData[0]).to.have.property('price');",
-							"        pm.expect(jsonData[0]).to.have.property('quantity');",
-							"    }",
+							"    pm.expect(jsonData[0]).to.have.property('id');",
+							"    pm.expect(jsonData[0]).to.have.property('name');",
+							"    pm.expect(jsonData[0]).to.have.property('price');",
+							"    pm.expect(jsonData[0]).to.have.property('quantity');",
 							"});",
 							""
 						],
@@ -231,6 +230,129 @@
 						"api",
 						"products",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verify GET /api/orders endpoint gets all orders",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response contains orders\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"    pm.expect(jsonData.length).to.be.greaterThan(0);",
+							"",
+							"    pm.expect(jsonData[0]).to.have.property(\"orderId\");",
+							"    pm.expect(jsonData[0]).to.have.property(\"orderItems\");",
+							"    pm.expect(jsonData[0]).to.have.property(\"customerName\");",
+							"    pm.expect(jsonData[0]).to.have.property(\"totalPrice\");",
+							"    pm.expect(jsonData[0]).to.have.property(\"status\");",
+							"    pm.expect(jsonData[0]).to.have.property(\"shipping\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verify POST /api/orders endpoint creates a new order",
+							"",
+							"const newOrder = {",
+							"    name: \"Lovely Customer\",",
+							"    orderItems: [",
+							"        { productId: 1, quantity: 2 },",
+							"        { productId: 2, quantity: 1 }",
+							"    ]",
+							"}; ",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response contains the created product (excluding 'id')\", function () {",
+							"    const responseBody = pm.response.json();",
+							"",
+							"    pm.expect(responseBody).to.have.property(\"orderId\");",
+							"    pm.expect(responseBody).to.have.property(\"orderItems\");",
+							"    pm.expect(responseBody).to.have.property(\"customerName\");",
+							"    pm.expect(responseBody).to.have.property(\"totalPrice\");",
+							"    pm.expect(responseBody).to.have.property(\"status\");",
+							"    pm.expect(responseBody).to.have.property(\"shipping\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerName\": \"Lovely Customer\",\n    \"orderItems\": [\n        { \"productId\": 1, \"quantityOrdered\": 2 },\n        { \"productId\": 2, \"quantityOrdered\": 1 }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders"
 					]
 				}
 			},

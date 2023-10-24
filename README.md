@@ -10,5 +10,4 @@ Website for a case study for the full stack position at Reebelo.
 ## To Test with Postman
 1. Startup the server locally using the directions above.
 2. Import the Postman collection file: `ReebeloCaseStudy.postman_collection.json`
-3. Create a Postman environment with `apiBaseUrl` set to http://localhost:3000
-4. Run the suite!
+3. Run the suite!
