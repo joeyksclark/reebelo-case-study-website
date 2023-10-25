@@ -1,6 +1,8 @@
+# API Design
+
 Follows REST principles and includes endpoints for managing products and orders.
 
-# Product Management:
+## Product Management:
 
 1. **Create a New Product**
     - **HTTP Method:** POST
@@ -79,7 +81,7 @@ Follows REST principles and includes endpoints for managing products and orders.
       }
       ```
 
-# Order Management:
+## Order Management:
 
 1. **Create a New Order**
     - **HTTP Method:** POST
