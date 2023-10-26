@@ -23,7 +23,7 @@ const Header: React.FC = () => {
                         </li>
                         <li>
                             <Link href="/products/new" passHref className="text-white hover:text-gray-300 font-medium text-lg cursor-pointer">
-                                Add Product
+                                Sell A Product
                             </Link>
                         </li>
                         <li>
