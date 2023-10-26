@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 
 const HomePage: React.FC = () => {
     const [productCount, setProductCount] = useState<number>(0);
@@ -24,7 +22,6 @@ const HomePage: React.FC = () => {
 
     return (
         <div>
-            <Header />
             <h1>Welcome to the Reebelo Dashboard</h1>
 
             <div>
@@ -44,7 +41,6 @@ const HomePage: React.FC = () => {
             <div>
                 <Link href="/orders">View Orders</Link>
             </div>
-            <Footer />
         </div>
     );
 };

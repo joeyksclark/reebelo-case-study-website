@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Product } from "../../util/types";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const ProductDetailPage: React.FC = () => {
     const router = useRouter();
@@ -22,7 +20,6 @@ const ProductDetailPage: React.FC = () => {
 
     return (
         <div>
-            <Header />
             <h1>Product Details</h1>
             {product ? (
                 <div>
@@ -33,7 +30,6 @@ const ProductDetailPage: React.FC = () => {
             ) : (
                 <p>Loading...</p>
             )}
-            <Footer />
         </div>
     );
 };
