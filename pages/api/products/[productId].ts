@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { findProductById } from "../productUtils";
+import { findProductById } from "../../../util/productUtils";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     try {

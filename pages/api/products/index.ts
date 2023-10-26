@@ -1,4 +1,4 @@
-import { getAllProducts } from '../productUtils';
+import { getAllProducts } from '../../../util/productUtils';
 
 import { NextApiRequest, NextApiResponse } from 'next';
 

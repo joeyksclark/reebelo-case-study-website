@@ -1,5 +1,5 @@
-import { getAllOrders } from '../orderUtils';
-import { findProductById } from "../productUtils";
+import { getAllOrders } from '../../../util/orderUtils';
+import { findProductById } from "../../../util/productUtils";
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
