@@ -1,4 +1,4 @@
-import { Order, OrderDAO, OrderItem, OrderItemDAO, Product, ShippingInfo } from "./types";
+import { Order, OrderDAO, OrderItem, OrderItemDAO, ShippingInfo } from "./types";
 import { getProduct, findProductById } from "./productUtils";
 
 import db from "./db";
@@ -95,7 +95,7 @@ export const getOrder = async (orderId: number): Promise<Order> => {
 
 export const createOrder = async (customerName: string, orderItems: OrderItem[]): Promise<Order> => {
     try {
-        // Does some basic stock quantity validation
+        // Also very basic stock quantity validation
         const totalPrice = await calculateTotalCost(orderItems);
 
         const { data, error } = await db
@@ -201,7 +201,6 @@ export const updateOrder = async (orderId: number, status: string, shippingInfo:
     // Check if the order exists
     const order = await getOrder(orderId);
 
-    // Update the order in the "orders" table
     const { data, error } = await db
         .from("orders")
         .update({
@@ -216,10 +215,7 @@ export const updateOrder = async (orderId: number, status: string, shippingInfo:
         throw new Error(`Order update failed: ${error?.message}`);
     }
 
-    // Fetch updated order items
     const orderItems = await getOrderItems(orderId);
-
-    // Create the updated order object
     const updatedOrder: Order = {
         orderId,
         orderItems,
