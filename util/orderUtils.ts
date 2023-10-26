@@ -1,5 +1,7 @@
+import { Order } from "./types";
+
 // TODO Mocked order data (replace with actual database or data source)
-let orders = [
+let orders: Order[] = [
     {
         orderId: 1,
         orderItems: [
@@ -54,10 +56,10 @@ let orders = [
     },
 ];
 
-export const getAllOrders = () => {
+export const getAllOrders = (): Order[] => {
     return orders;
 }
 
-export const findOrderById = (orderId: number) => {
+export const findOrderById = (orderId: number): Order | undefined => {
     return orders.find((order) => order.orderId === orderId);
 };

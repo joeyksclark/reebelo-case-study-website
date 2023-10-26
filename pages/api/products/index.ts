@@ -1,17 +1,16 @@
 import { getAllProducts } from '../../../util/productUtils';
+import { ApiResponse, Product } from "../../../util/types";
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<Product>>) {
   try {
     if (req.method === 'GET') {
       // Fetch all products
       res.status(200).json(getAllProducts());
-
     } else if (req.method === 'POST') {
       // Create a product
       createProduct(req, res);
-
     } else {
       // Method Not Allowed
       res.status(405).end();
@@ -27,14 +26,14 @@ const validateInput = (name: string, price: number, stockQuantity: number) => {
   }
 }
 
-const createProduct = (req: NextApiRequest, res: NextApiResponse) => {
+const createProduct = (req: NextApiRequest, res: NextApiResponse<ApiResponse<Product>>) => {
   try {
     const { name, price, stockQuantity } = req.body;
     validateInput(name, price, stockQuantity);
 
-    let products = getAllProducts()
-    const newProduct = {
-      productId: getAllProducts.length + 1,
+    let products = getAllProducts();
+    const newProduct: Product = {
+      productId: products.length + 1,
       name,
       price,
       stockQuantity,

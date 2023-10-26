@@ -1,7 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { findProductById } from "../../../util/productUtils";
+import { ApiResponse, Product } from "../../../util/types";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+import { NextApiRequest, NextApiResponse } from 'next';
+
+export default function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<Product>>) {
     try {
         if (req.method === 'GET') {
             getProduct(req, res);
@@ -16,7 +18,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-const getProduct = (req: NextApiRequest, res: NextApiResponse) => {
+const getProduct = (req: NextApiRequest, res: NextApiResponse<ApiResponse<Product>>) => {
     try {
         const productId = parseInt(req.query.productId as string, 10);
         const existingProduct = findProductById(productId);
@@ -32,7 +34,7 @@ const getProduct = (req: NextApiRequest, res: NextApiResponse) => {
     }
 };
 
-const updateProduct = (req: NextApiRequest, res: NextApiResponse) => {
+const updateProduct = (req: NextApiRequest, res: NextApiResponse<ApiResponse<Product>>) => {
     try {
         const { name, price, stockQuantity } = req.body;
 
