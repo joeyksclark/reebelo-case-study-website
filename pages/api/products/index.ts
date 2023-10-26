@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<Product>>) {
   try {
     if (req.method === 'GET') {
-      // Fetch all products
+      // Get all products
       const products = await getAllProducts();
       res.status(200).json(products);
     } else if (req.method === 'POST') {

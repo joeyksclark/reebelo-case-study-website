@@ -244,58 +244,6 @@
 			"name": "Orders",
 			"item": [
 				{
-					"name": "Get Order by Id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Verify GET /api/orders/[orderId] endpoint gets order",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Response is valid JSON\", function () {",
-									"    pm.response.to.be.json;",
-									"});",
-									"",
-									"pm.test(\"GET /api/orders/[orderId] returns an order\", function () {",
-									"    const responseBody = pm.response.json();",
-									"",
-									"    pm.expect(responseBody).to.have.property(\"orderId\");",
-									"    pm.expect(responseBody).to.have.property(\"orderItems\");",
-									"    pm.expect(responseBody).to.have.property(\"customerName\");",
-									"    pm.expect(responseBody).to.have.property(\"totalPrice\");",
-									"    pm.expect(responseBody).to.have.property(\"status\");",
-									"    pm.expect(responseBody).to.have.property(\"shipping\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/api/orders/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"orders",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Orders",
 					"event": [
 						{
@@ -419,6 +367,58 @@
 					"response": []
 				},
 				{
+					"name": "Get Order by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify GET /api/orders/[orderId] endpoint gets order",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"GET /api/orders/[orderId] returns an order\", function () {",
+									"    const responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.have.property(\"orderId\");",
+									"    pm.expect(responseBody).to.have.property(\"orderItems\");",
+									"    pm.expect(responseBody).to.have.property(\"customerName\");",
+									"    pm.expect(responseBody).to.have.property(\"totalPrice\");",
+									"    pm.expect(responseBody).to.have.property(\"status\");",
+									"    pm.expect(responseBody).to.have.property(\"shipping\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/orders/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Put Order by Id",
 					"event": [
 						{
@@ -434,7 +434,7 @@
 									"        { productId: 2, orderQuantity: 1 }",
 									"    ],",
 									"    customerName: \"Joey\",",
-									"    totalPrice: 0,",
+									"    totalPrice: 61.96,",
 									"    status: \"Shipped\",",
 									"    shipping: {",
 									"        trackingCompany: \"New Shipping Company\",",

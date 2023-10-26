@@ -1,14 +1,5 @@
-import sqlite3 from 'sqlite3';
+import { createClient } from '@supabase/supabase-js';
 
-const db = new sqlite3.Database('../database.sqlite');
-
-db.run(`
-  CREATE TABLE IF NOT EXISTS products (
-    productId INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    price REAL,
-    stockQuantity INTEGER
-  )
-`);
-
+// @ts-ignore
+const db = createClient(process.env.DB_URL, process.env.DB_KEY);
 export default db;

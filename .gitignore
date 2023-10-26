@@ -37,3 +37,4 @@ target/
 /out/
 *.tsbuildinfo
 next-env.d.ts
+.env.local

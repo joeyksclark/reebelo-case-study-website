@@ -1,65 +1,251 @@
-import { Order } from "./types";
+import { Order, OrderDAO, OrderItem, OrderItemDAO, Product, ShippingInfo } from "./types";
+import { getProduct, findProductById } from "./productUtils";
 
-// TODO Mocked order data (replace with actual database or data source)
-let orders: Order[] = [
-    {
-        orderId: 1,
-        orderItems: [
-            { productId: 1, orderQuantity: 2 },
-            { productId: 2, orderQuantity: 1 }
-        ],
-        customerName: "Joey",
-        totalPrice: 0,
-        status: "Processing",
-        shipping: {},
-    },
-    {
-        orderId: 2,
-        orderItems: [
-            { productId: 1, orderQuantity: 2 },
-            { productId: 2, orderQuantity: 1 }
-        ],
-        customerName: "Nina",
-        totalPrice: 0,
-        status: "Shipped",
-        shipping: {
-            trackingCompany: "SendAirway",
-            trackingNumber: "SE789012"
-        },
-    },
-    {
-        orderId: 3,
-        orderItems: [
-            { productId: 1, orderQuantity: 3 },
-            { productId: 2, orderQuantity: 2 }
-        ],
-        customerName: "Marika",
-        totalPrice: 0,
-        status: "Delivered",
-        shipping: {
-            trackingCompany: "ShipExpress",
-            trackingNumber: "SE789012"
-        },
-    },
-    {
-        orderId: 4,
-        orderItems: [
-            { productId: 1, orderQuantity: 1 }
-        ],
-        customerName: "Caitlin",
-        totalPrice: 0,
-        status: "Canceled",
-        shipping: {
-            trackingCompany: "iShipFast",
-            trackingNumber: "5819057849302"
-        },
-    },
-];
+import db from "./db";
 
-export const getAllOrders = (): Order[] => {
-    return orders;
+export const getAllOrders = async (): Promise<Order[]> => {
+    try {
+        const orderDAOs: OrderDAO[] = await getAllOrderDAOs();
+        const orderItemDAOs: OrderItemDAO[] = await getAllOrderItemDAOs();
+
+        // Create a map to group order items by orderId
+        const orderItemsMap: Record<number, OrderItem[]> = {};
+        orderItemDAOs.forEach((orderItemDAO) => {
+            const { orderId, productId, orderQuantity } = orderItemDAO;
+            if (!orderItemsMap[orderId]) {
+                orderItemsMap[orderId] = [];
+            }
+            orderItemsMap[orderId].push({ productId, orderQuantity });
+        });
+
+        return orderDAOs.map((orderDAO: OrderDAO) => ({
+            orderId: orderDAO.orderId,
+            orderItems: orderItemsMap[orderDAO.orderId],
+            customerName: orderDAO.customerName,
+            totalPrice: orderDAO.totalPrice,
+            status: orderDAO.status,
+            shipping: {
+                trackingCompany: orderDAO.shippingTrackingCompany,
+                trackingNumber: orderDAO.shippingTrackingNumber,
+            },
+        }));
+    } catch (error: any) {
+        throw new Error(`Error retrieving orders: ${error.message}`);
+    }
+};
+
+const getAllOrderDAOs = async (): Promise<OrderDAO[]> => {
+    const {data, error} = await db
+        .from("orders")
+        .select("*");
+
+    if (error) {
+        throw new Error(`Error fetching orders: ${error.message}`);
+    }
+
+    return data as OrderDAO[];
+};
+
+const getAllOrderItemDAOs = async (): Promise<OrderItemDAO[]> => {
+    const {data, error} = await db
+        .from("order_items")
+        .select("*");
+
+    if (error) {
+        throw new Error(`Error fetching order_items: ${error.message}`);
+    }
+
+    return data as OrderItemDAO[];
+};
+
+const findOrderDAOById = async (orderId: number): Promise<OrderDAO | undefined> => {
+    const {data, error} = await db
+        .from("orders")
+        .select("*")
+        .eq("orderId", orderId)
+        .single();
+
+    if (error) {
+        throw new Error(`Error finding product: ${error.message}`);
+    }
+
+    return data as OrderDAO | undefined;
+};
+
+export const getOrder = async (orderId: number): Promise<Order> => {
+    const orderDAO = await findOrderDAOById(orderId)
+    const orderItems = await getOrderItems(orderId);
+
+    if (orderDAO) {
+        return {
+            orderId: orderId,
+            orderItems: orderItems,
+            customerName: orderDAO.customerName,
+            totalPrice: orderDAO.totalPrice,
+            status: orderDAO.status,
+            shipping: {
+                trackingCompany: orderDAO.shippingTrackingCompany,
+                trackingNumber: orderDAO.shippingTrackingNumber
+            }
+        };
+    } else {
+        throw new Error(`Order with ID ${orderId} doesn't exist.`)
+    }
+};
+
+export const createOrder = async (customerName: string, orderItems: OrderItem[]): Promise<Order> => {
+    try {
+        // Does some basic stock quantity validation
+        const totalPrice = await calculateTotalCost(orderItems);
+
+        const { data, error } = await db
+            .from("orders")
+            .insert([
+                {
+                    customerName,
+                    totalPrice,
+                    status: "Processing",
+                    shippingTrackingCompany: "",
+                    shippingTrackingNumber: "",
+                }
+            ])
+            .select();
+
+        if (error || !data || data.length === 0) {
+            throw new Error(`Order creation failed: ${error?.message}`);
+        }
+
+        const orderId = data[0].orderId;
+
+        await insertOrderItems(orderId, orderItems);
+        for (const orderItem of orderItems) {
+            await updateProductStock(orderItem.productId, orderItem.orderQuantity);
+        }
+
+        const newOrder: Order = {
+            orderId,
+            orderItems,
+            customerName,
+            totalPrice,
+            status: "Processing",
+            shipping: {
+                trackingCompany: "",
+                trackingNumber: "",
+            },
+        };
+
+        return newOrder;
+    } catch (error: any) {
+        throw new Error(`Error creating order: ${error.message}`);
+    }
+};
+
+const insertOrderItems = async (orderId: number, orderItems: OrderItem[]): Promise<void> => {
+    const orderItemsData: OrderItemDAO[] = orderItems.map((orderItem) => ({
+        orderId,
+        productId: orderItem.productId,
+        orderQuantity: orderItem.orderQuantity,
+    }));
+
+    const { data, error } = await db
+        .from("order_items")
+        .insert(orderItemsData)
+        .select();
+
+    if (error || !data || data.length === 0) {
+        throw new Error(`OrderItem creation failed: ${error?.message}`);
+    }
+};
+
+const updateProductStock = async (productId: number, orderQuantity: number): Promise<void> => {
+    const product = await getProduct(productId);
+
+    if (product) {
+        const newStockQuantity = product.stockQuantity - orderQuantity;
+
+        const { data, error } = await db
+            .from("products")
+            .update({ stockQuantity: newStockQuantity })
+            .eq("productId", productId)
+            .select();
+
+        if (error || !data || data.length === 0) {
+            throw new Error(`Stock update failed: ${error?.message}`);
+        }
+    }
+};
+
+
+const calculateTotalCost = async (orderItems: OrderItem[]): Promise<number> => {
+    let totalCost = 0;
+
+    for (const orderItem of orderItems) {
+        const { productId, orderQuantity } = orderItem;
+        const product = await findProductById(productId);
+        if (product) {
+            if (orderQuantity <= product.stockQuantity) {
+                totalCost += product.price * orderQuantity;
+            } else {
+                throw new Error(`Not enough of ${product.name} in stock. ` +
+                    `You ordered ${orderQuantity}, but there are only ${product.stockQuantity}.`)
+            }
+        } else {
+            throw new Error(`The product ordered does not exist (productId: ${productId}).`)
+        }
+    }
+
+    return totalCost;
 }
 
-export const findOrderById = (orderId: number): Order | undefined => {
-    return orders.find((order) => order.orderId === orderId);
+export const updateOrder = async (orderId: number, status: string, shippingInfo: ShippingInfo): Promise<Order> => {
+    // Check if the order exists
+    const order = await getOrder(orderId);
+
+    // Update the order in the "orders" table
+    const { data, error } = await db
+        .from("orders")
+        .update({
+            status,
+            shippingTrackingCompany: shippingInfo.trackingCompany,
+            shippingTrackingNumber: shippingInfo.trackingNumber,
+        })
+        .eq("orderId", orderId)
+        .select();
+
+    if (error || !data || data.length === 0) {
+        throw new Error(`Order update failed: ${error?.message}`);
+    }
+
+    // Fetch updated order items
+    const orderItems = await getOrderItems(orderId);
+
+    // Create the updated order object
+    const updatedOrder: Order = {
+        orderId,
+        orderItems,
+        customerName: order.customerName,
+        totalPrice: order.totalPrice,
+        status,
+        shipping: {
+            trackingCompany: shippingInfo.trackingCompany,
+            trackingNumber: shippingInfo.trackingNumber,
+        },
+    };
+
+    return updatedOrder;
 };
+
+
+export const getOrderItems = async (orderId: number): Promise<OrderItem[]> => {
+    const { data, error } = await db
+        .from("order_items")
+        .select("productId, orderQuantity")
+        .eq("orderId", orderId);
+
+    if (error) {
+        throw new Error(`Error retrieving OrderItems: ${error.message}`);
+    }
+
+    return data as OrderItem[] | [];
+};
+

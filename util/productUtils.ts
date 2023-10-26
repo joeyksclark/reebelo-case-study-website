@@ -1,90 +1,81 @@
 import { Product } from "./types";
 import db from "./db";
 
-export const getAllProducts = (): Promise<Product[]> => {
-    return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM products';
-        db.all(query, (error, rows) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(rows as Product[]);
-            }
-        });
-    });
+export const getAllProducts = async (): Promise<Product[]> => {
+    const { data, error } = await db
+        .from("products")
+        .select("*");
+
+    if (error) {
+        throw new Error(`Error fetching products: ${error.message}`);
+    }
+
+    return data as Product[];
 };
 
-export const findProductById = (productId: number): Promise<Product | undefined> => {
-    return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM products WHERE productId = ?';
-        db.get(query, productId, (error, row) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(row as Product);
-            }
-        });
-    });
+export const findProductById = async (productId: number): Promise<Product | undefined> => {
+    const { data, error } = await db
+        .from("products")
+        .select("*")
+        .eq("productId", productId)
+        .single();
+
+    if (error) {
+        throw new Error(`Error finding product: ${error.message}`);
+    }
+
+    return data as Product | undefined;
 };
 
 export const getProduct = async (productId: number): Promise<Product> => {
-    const product = await findProductById(productId)
+    const product = await findProductById(productId);
 
     if (product) {
         return product;
     } else {
-        throw new Error(`Product with ID ${productId} doesn't exist.`)
+        throw new Error(`Product with ID ${productId} doesn't exist.`);
     }
 };
 
-export const createProduct = (name: string, price: number, stockQuantity: number): Promise<Product> => {
-    return new Promise((resolve, reject) => {
-        const query = 'INSERT INTO products (name, price, stockQuantity) VALUES (?, ?, ?)';
-        db.run(
-            query,
-            [name, price, stockQuantity],
-            function (error) {
-                if (error) {
-                    reject(new Error(`Product creation failed: ${error.message}`));
-                } else {
-                    const lastId = this.lastID;
-                    if (lastId) {
-                        resolve({
-                            productId: lastId,
-                            name,
-                            price,
-                            stockQuantity,
-                        });
-                    } else {
-                        reject(new Error('Product creation failed: null lastId.'));
-                    }
-                }
-            }
-        );
-    });
+export const createProduct = async (name: string, price: number, stockQuantity: number): Promise<Product> => {
+    const { data, error } = await db
+        .from('products')
+        .insert([
+            {
+                name: name,
+                price: price,
+                stockQuantity: stockQuantity},
+        ])
+        .select();
+
+    if (error || !data || data.length === 0) {
+        throw new Error(`Product creation failed: ${error?.message}`);
+    }
+
+    return data[0] as Product;
 };
 
-export const updateProduct = (productId: number, name: string, price: number, stockQuantity: number): Promise<Product> => {
-    return new Promise(async (resolve, reject) => {
-        // Check if product exists
-        await getProduct(productId);
+export const updateProduct = async (productId: number, name: string, price: number, stockQuantity: number): Promise<Product> => {
+    // Check if product exists
+    await getProduct(productId);
 
-        const query = 'UPDATE products SET name = ?, price = ?, stockQuantity = ? WHERE productId = ?';
-        db.run(
-            query,
-            [name, price, stockQuantity, productId],
-            (error) => {
-                if (error) {
-                    reject(new Error(`Error updating product: ${error.message}`));
-                } else {
-                    resolve({
-                        productId: productId,
-                        name,
-                        price,
-                        stockQuantity,
-                    });
-                }
-            }
-        );
-    });
+    const { data, error } = await db
+        .from('products')
+        .update({
+            name: name,
+            price: price,
+            stockQuantity: stockQuantity
+        })
+        .eq('productId', productId)
+        .select()
+
+    if (error) {
+        throw new Error(`Error updating product: ${error.message}`);
+    }
+
+    if (data && data[0]) {
+        return data[0] as Product;
+    } else {
+        throw new Error(`Error updating product with ID ${productId}.`);
+    }
 };
