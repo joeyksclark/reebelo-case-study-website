@@ -1,5 +1,7 @@
 # ReebeloCaseStudyWebsite
-Website for a case study for the full stack position at Reebelo.
+Welcome to the Full Stack Case Study Project for Reebelo
+
+In this time-constrained project, I present a case study designed for evaluating full-stack developer candidates at Reebelo. While this project may contain many TODOs, it serves as a platform for making informed design decisions and ultimately delivering a fully functional product. I look forward to discussing those decisions and considerations I would make under different constraints.
 
 ## To View "Production"
 1. Navigate to https://reebelo-case-study-website.vercel.app/
