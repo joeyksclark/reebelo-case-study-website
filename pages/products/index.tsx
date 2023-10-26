@@ -1,4 +1,4 @@
-import {Product} from "../util/types";
+import {Product} from "../../util/types";
 
 import React, { useEffect, useState } from 'react';
 
