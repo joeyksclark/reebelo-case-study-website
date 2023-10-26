@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import Link from 'next/link';
 
 const HomePage: React.FC = () => {
@@ -21,25 +20,17 @@ const HomePage: React.FC = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Welcome to the Reebelo Dashboard</h1>
+        <div className="container mx-auto p-8">
+            <h1 className="text-3xl font-bold mb-4">Welcome to the Dashboard</h1>
 
-            <div>
-                <h2>Product Statistics</h2>
-                <p>Total Products: {productCount}</p>
+            <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Product Statistics</h2>
+                <p className="text-gray-700">Total Products: {productCount}</p>
             </div>
 
-            <div>
-                <h2>Order Statistics</h2>
-                <p>Total Orders: {orderCount}</p>
-            </div>
-
-            <div>
-                <Link href="/products">View Products</Link>
-            </div>
-
-            <div>
-                <Link href="/orders">View Orders</Link>
+            <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Order Statistics</h2>
+                <p className="text-gray-700">Total Orders: {orderCount}</p>
             </div>
         </div>
     );
