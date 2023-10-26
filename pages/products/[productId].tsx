@@ -19,16 +19,16 @@ const ProductDetailPage: React.FC = () => {
     }, [productId]);
 
     return (
-        <div>
-            <h1>Product Details</h1>
+        <div className="container mx-auto py-10">
+            <h1 className="text-4xl font-bold">Product Details</h1>
             {product ? (
-                <div>
-                    <h2>{product.name}</h2>
-                    <p>Price: ${product.price.toFixed(2)}</p>
-                    <p>Stock Quantity: {product.stockQuantity}</p>
+                <div className="mt-5">
+                    <h2 className="text-2xl font-semibold">{product.name}</h2>
+                    <p className="text-lg">Price: ${product.price.toFixed(2)}</p>
+                    <p className="text-lg">Stock Quantity: {product.stockQuantity}</p>
                 </div>
             ) : (
-                <p>Loading...</p>
+                <p className="mt-5 text-lg">Loading...</p>
             )}
         </div>
     );
