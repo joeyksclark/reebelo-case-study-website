@@ -1,6 +1,9 @@
 # ReebeloCaseStudyWebsite
 Website for a case study for the full stack position at Reebelo.
 
+## To View "Production"
+1. Navigate to https://reebelo-case-study-website.vercel.app/
+
 ## To Run Locally
 1. Navigate to the `reebelo-case-study-website` directory
 2. Run `npm install`
