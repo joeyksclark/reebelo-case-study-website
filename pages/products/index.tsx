@@ -1,6 +1,8 @@
 import {Product} from "../../util/types";
 
 import React, { useEffect, useState } from 'react';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const ProductsPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -15,6 +17,7 @@ const ProductsPage: React.FC = () => {
 
     return (
         <div>
+            <Header />
             <h1>Products</h1>
 
             <ul>
@@ -26,6 +29,7 @@ const ProductsPage: React.FC = () => {
                     </li>
                 ))}
             </ul>
+            <Footer />
         </div>
     );
 };

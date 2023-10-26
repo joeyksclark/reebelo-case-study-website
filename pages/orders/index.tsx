@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Order} from "../../util/types";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const OrdersPage: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -14,6 +16,7 @@ const OrdersPage: React.FC = () => {
 
     return (
         <div>
+            <Header />
             <h1>Orders</h1>
 
             <ul>
@@ -26,6 +29,7 @@ const OrdersPage: React.FC = () => {
                     </li>
                 ))}
             </ul>
+            <Footer />
         </div>
     );
 };

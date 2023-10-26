@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {Order} from "../../util/types";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const OrderDetailPage: React.FC = () => {
     const router = useRouter();
@@ -20,6 +22,7 @@ const OrderDetailPage: React.FC = () => {
 
     return (
         <div>
+            <Header />
             <h1>Order Details</h1>
             {order ? (
                 <div>
@@ -31,6 +34,7 @@ const OrderDetailPage: React.FC = () => {
             ) : (
                 <p>Loading...</p>
             )}
+            <Footer />
         </div>
     );
 };

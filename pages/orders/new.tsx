@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Product} from "../../util/types";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const NewOrderPage: React.FC = () => {
     const [customerName, setCustomerName] = useState<string>('');
@@ -55,6 +57,7 @@ const NewOrderPage: React.FC = () => {
 
     return (
         <div>
+            <Header />
             <h1>Create a New Order</h1>
 
             <form onSubmit={handleOrderSubmit}>
@@ -91,6 +94,7 @@ const NewOrderPage: React.FC = () => {
                     <button type="submit">Create Order</button>
                 </div>
             </form>
+            <Footer />
         </div>
     );
 };
