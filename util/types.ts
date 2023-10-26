@@ -25,3 +25,18 @@ export interface ShippingInfo {
     trackingCompany?: string;
     trackingNumber?: string;
 }
+
+export interface OrderDAO {
+    orderId: number;
+    customerName: string;
+    totalPrice: number;
+    status: string;
+    shippingTrackingCompany: string;
+    shippingTrackingNumber: string;
+}
+
+export interface OrderItemDAO {
+    orderId: number;
+    productId: number;
+    orderQuantity: number;
+}
