@@ -47,7 +47,6 @@ const ProductDetailPage: React.FC = () => {
                             setProduct(data);
                         });
                 } else {
-                    // Handle update failure
                     console.error('Failed to update the product');
                     setUpdateStatus('Update failed');
                 }
