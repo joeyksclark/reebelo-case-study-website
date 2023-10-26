@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {Order} from "../../util/types";
+import Link from 'next/link';
+import { Order } from "../../util/types";
 
 const OrdersPage: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -13,16 +14,18 @@ const OrdersPage: React.FC = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Orders</h1>
+        <div className="container mx-auto py-10">
+            <h1 className="text-4xl font-bold">Orders</h1>
 
-            <ul>
+            <ul className="mt-5">
                 {orders.map((order) => (
-                    <li key={order.orderId}>
-                        <h2>Order ID: {order.orderId}</h2>
-                        <p>Customer Name: {order.customerName}</p>
-                        <p>Total Price: ${order.totalPrice.toFixed(2)}</p>
-                        <p>Status: {order.status}</p>
+                    <li key={order.orderId} className="mb-5 p-4 border rounded-md">
+                        <Link href={`/orders/${order.orderId}`} className="block">
+                            <h2 className="text-2xl font-semibold">Order ID: {order.orderId}</h2>
+                            <p className="text-lg">Customer Name: {order.customerName}</p>
+                            <p className="text-lg">Total Price: ${order.totalPrice.toFixed(2)}</p>
+                            <p className="text-lg">Status: {order.status}</p>
+                        </Link>
                     </li>
                 ))}
             </ul>
