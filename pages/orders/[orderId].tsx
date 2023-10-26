@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Order, ShippingInfo } from "../../util/types";
+import { Order } from "../../util/types";
 
 const OrderDetailPage: React.FC = () => {
     const router = useRouter();
