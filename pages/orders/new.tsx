@@ -82,7 +82,7 @@ const NewOrderPage: React.FC = () => {
                 className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
             >
                 <div className="mb-4">
-                    <label htmlFor="customerName" className="block text-gray-700 text-sm font-bold mb-2">
+                    <label htmlFor="customerName" className="block text-lg font-semibold mb-2">
                         Customer Name:
                     </label>
                     <input
@@ -96,31 +96,43 @@ const NewOrderPage: React.FC = () => {
                 </div>
 
                 <div className="mb-4">
-                    <h2 className="block text-gray-700 text-sm font-bold mb-2">Select Products:</h2>
-                    <ul>
+                    <h2 className="block text-lg font-semibold mb-2">Select Products:</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {products.map((product) => (
-                            <li key={product.productId} className="mb-2">
-                                {product.name} - Price: ${product.price.toFixed(2)}, Stock: {product.stockQuantity} (
-                                <button
-                                    type="button"
-                                    onClick={() => handleProductSelect(product.productId)}
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-                                >
-                                    Add
-                                </button>
-                                )
-                            </li>
+                            <div key={product.productId} className="border rounded p-4">
+                                <h3 className="text-lg font-semibold">{product.name}</h3>
+                                <p>Price: ${product.price.toFixed(2)}</p>
+                                <p>Stock: {product.stockQuantity}</p>
+                                <div className="flex items-center mt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleProductSelect(product.productId)}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
 
                 {selectedProducts.length > 0 && (
                     <div className="mb-4">
-                        <h2 className="block text-gray-700 text-sm font-bold mb-2">Selected Products:</h2>
+                        <h2 className="block text-lg font-semibold mb-2">Selected Products:</h2>
                         <ul>
                             {selectedProducts.map((item) => (
                                 <li key={item.product.productId} className="mb-2">
-                                    {item.product.name} - Price: ${item.product.price.toFixed(2)}, Quantity: {item.quantity}
+                                    {item.product.name} - Price: ${item.product.price.toFixed(2)}, Quantity:
+                                    <input
+                                        value={item.quantity}
+                                        onChange={(e) => {
+                                            const updatedProducts = [...selectedProducts];
+                                            updatedProducts.find((p) => p.product.productId === item.product.productId)!.quantity = parseInt(e.target.value);
+                                            setSelectedProducts(updatedProducts);
+                                        }}
+                                        className="w-12 ml-2"
+                                    />
                                 </li>
                             ))}
                         </ul>
@@ -128,7 +140,7 @@ const NewOrderPage: React.FC = () => {
                 )}
 
                 <div className="mb-4">
-                    <h2 className="block text-gray-700 text-sm font-bold mb-2">Total Price:</h2>
+                    <h2 className="block text-lg font-semibold mb-2">Total Price:</h2>
                     <p>${totalPrice.toFixed(2)}</p>
                 </div>
 

@@ -9,7 +9,7 @@ In this time-constrained project, I present a case study designed for evaluating
 ## To Run Locally
 1. Navigate to the `reebelo-case-study-website` directory
 2. Run `npm install`
-3. Create your database tables on https://supabase.com/
+3. Create your database tables on https://supabase.com/ from `notes/db_design.md`
 4. Update your `.env.local` file with the `DB_URL` and `DB_KEY` environment variables
 5. Run `npm run dev`
 6. Navigate to http://localhost:3000 in your browser

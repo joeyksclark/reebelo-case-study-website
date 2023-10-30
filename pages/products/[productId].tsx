@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Product } from "../../util/types";
+import { Product } from '../../util/types';
 
 const ProductDetailPage: React.FC = () => {
     const router = useRouter();
@@ -18,6 +18,8 @@ const ProductDetailPage: React.FC = () => {
                 .then((response) => response.json())
                 .then((data) => {
                     setProduct(data);
+                    setUpdatedPrice(data.price);
+                    setUpdatedStockQuantity(data.stockQuantity);
                 });
         }
     }, [productId]);
@@ -100,15 +102,6 @@ const ProductDetailPage: React.FC = () => {
                         </form>
                     ) : (
                         <>
-                            {updateStatus && (
-                                <div
-                                    className={`${
-                                        updateStatus === 'Update successful' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
-                                    } p-2 rounded-md mb-4`}
-                                >
-                                    {updateStatus}
-                                </div>
-                            )}
                             <p className="text-lg">Price: ${product.price.toFixed(2)}</p>
                             <p className="text-lg">Stock Quantity: {product.stockQuantity}</p>
                             <button
@@ -117,6 +110,15 @@ const ProductDetailPage: React.FC = () => {
                             >
                                 Edit
                             </button>
+                            {updateStatus && (
+                                <div
+                                    className={`${
+                                        updateStatus === 'Update successful' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                                    } p-2 rounded-md mb-4 my-2`}
+                                >
+                                    {updateStatus}
+                                </div>
+                            )}
                         </>
                     )}
                 </div>

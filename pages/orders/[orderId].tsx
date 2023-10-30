@@ -179,16 +179,18 @@ const OrderDetailPage: React.FC = () => {
                                     onClick={() => {
                                         setUpdatedStatus(order?.status || '');
                                     }}
-                                    className="bg-blue-500 hover.bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline mt-3"
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline mt-3"
                                 >
                                     Edit Status
                                 </button>
                             </div>
                         )}
 
+                        <hr className="border-t-2 border-gray-300 my-5"/>
+
                         <button
                             onClick={handleUpdateOrder}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline mt-3"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
                         >
                             Save Changes
                         </button>
