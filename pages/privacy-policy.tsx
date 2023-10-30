@@ -15,7 +15,7 @@ const PrivacyPolicyPage: React.FC = () => {
             </section>
 
             <section className="mb-5">
-                <h2 className="text-2xl font-semibold mb-3">We Don't Know What You Had for Breakfast (Or Do We?)</h2>
+                <h2 className="text-2xl font-semibold mb-3">We Don&apos;t Know What You Had for Breakfast (Or Do We?)</h2>
                 <p>
                     We may not collect some basic information like your name, email address, and favorite ice cream flavor. We collect this information to desecrate your experience on our website and to send you the occasional funny cat meme.
                 </p>
@@ -24,19 +24,19 @@ const PrivacyPolicyPage: React.FC = () => {
             <section className="mb-5">
                 <h2 className="text-2xl font-semibold mb-3">Security is Our Middle Name*</h2>
                 <p>
-                    *Actually, it's not. Have you seen the API? We use the latest technology to protect no data from hackers, aliens, and anyone else who might be interested in it.
+                    *Actually, it&apos;s not. Have you seen the API? We use the latest technology to protect no data from hackers, aliens, and anyone else who might be interested in it.
                 </p>
             </section>
 
             <section className="mb-5">
                 <h2 className="text-2xl font-semibold mb-3">Cookies (The Delicious Kind)</h2>
                 <p>
-                    We don't use cookies on our website to track your preferences or provide you with a better browsing experience.
+                    We don&apos;t use cookies on our website to track your preferences or provide you with a better browsing experience.
                 </p>
             </section>
 
             <section className="mb-5">
-                <h1 className="text-4xl font-bold mt-8 mb-3">BUT SERIOUSLY, DON'T ENTER ANY PERSONAL INFORMATION</h1>
+                <h1 className="text-4xl font-bold mt-8 mb-3">BUT SERIOUSLY, DON&apos;T ENTER ANY PERSONAL INFORMATION</h1>
             </section>
 
             <section className="mb-5">

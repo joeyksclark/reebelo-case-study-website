@@ -1,20 +1,30 @@
 import React, { useState } from 'react';
 
+type ProductFormState = {
+    name: string;
+    price: number;
+    stockQuantity: number;
+};
+
 const NewProductPage: React.FC = () => {
-    const [productName, setProductName] = useState<string>('');
-    const [productPrice, setProductPrice] = useState<number>(0);
-    const [productStockQuantity, setProductStockQuantity] = useState<number>(0);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [product, setProduct] = useState<ProductFormState>({ name: '', price: 0, stockQuantity: 0 });
+    const [statusMessage, setStatusMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setProduct(prev => ({ ...prev, [id]: id === 'name' ? value : Number(value) }));
+    };
 
     const handleProductSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
 
-        const newProduct = {
-            name: productName,
-            price: productPrice,
-            stockQuantity: productStockQuantity,
-        };
+        if (!product.name || product.price <= 0 || product.stockQuantity <= 0) {
+            setStatusMessage('Please provide valid product details.');
+            setIsLoading(false);
+            return;
+        }
 
         try {
             const response = await fetch('/api/products', {
@@ -22,23 +32,19 @@ const NewProductPage: React.FC = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newProduct),
+                body: JSON.stringify(product),
             });
 
             if (response.status === 201) {
-                setSuccessMessage('Product created successfully');
-                setProductName('');
-                setProductPrice(0);
-                setProductStockQuantity(0);
-                setErrorMessage(null);
+                setStatusMessage('Product created successfully');
+                setProduct({ name: '', price: 0, stockQuantity: 0 });
             } else {
-                setErrorMessage('Failed to create the product');
-                setSuccessMessage(null);
+                setStatusMessage('Failed to create the product');
             }
         } catch (error) {
-            console.error('Error:', error);
-            setErrorMessage('An error occurred while creating the product');
-            setSuccessMessage(null);
+            setStatusMessage('An error occurred while creating the product');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -46,58 +52,52 @@ const NewProductPage: React.FC = () => {
         <div className="container mx-auto py-10">
             <h1 className="text-4xl font-bold">Sell a New Product</h1>
 
-            {successMessage && (
-                <div className="mt-5 bg-green-200 text-green-800 p-3 rounded">
-                    {successMessage}
-                </div>
-            )}
-
-            {errorMessage && (
-                <div className="mt-5 bg-red-200 text-red-800 p-3 rounded">
-                    {errorMessage}
+            {statusMessage && (
+                <div className={`mt-5 p-3 rounded ${statusMessage.startsWith('Failed') ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'}`}>
+                    {statusMessage}
                 </div>
             )}
 
             <form onSubmit={handleProductSubmit} className="mt-5">
                 <div className="mb-4">
-                    <label htmlFor="productName" className="block font-medium">Product Name:</label>
+                    <label htmlFor="name" className="block font-medium">Product Name:</label>
                     <input
                         type="text"
-                        id="productName"
-                        value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
+                        id="name"
+                        value={product.name}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="productPrice" className="block font-medium">Price:</label>
+                    <label htmlFor="price" className="block font-medium">Price:</label>
                     <input
                         type="number"
-                        id="productPrice"
-                        value={productPrice}
-                        onChange={(e) => setProductPrice(Number(e.target.value))}
+                        id="price"
+                        value={product.price}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="productStockQuantity" className="block font-medium">Stock Quantity:</label>
+                    <label htmlFor="stockQuantity" className="block font-medium">Stock Quantity:</label>
                     <input
                         type="number"
-                        id="productStockQuantity"
-                        value={productStockQuantity}
-                        onChange={(e) => setProductStockQuantity(Number(e.target.value))}
+                        id="stockQuantity"
+                        value={product.stockQuantity}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
 
                 <div>
-                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md">
-                        Create Product
+                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md" disabled={isLoading}>
+                        {isLoading ? 'Creating...' : 'Create Product'}
                     </button>
                 </div>
             </form>

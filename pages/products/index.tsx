@@ -8,29 +8,31 @@ const ProductsPage: React.FC = () => {
     useEffect(() => {
         fetch('/api/products')
             .then((response) => response.json())
-            .then((data) => {
-                setProducts(data);
-            });
+            .then((data) => setProducts(data));
     }, []);
 
     return (
-        <div className="container mx-auto py-10">
-            <h1 className="text-4xl font-bold">Products</h1>
+        <main className="container mx-auto py-10" aria-label="Products">
+            <header>
+                <h1 className="text-4xl font-bold mb-5">Products</h1>
+            </header>
 
-            <ul className="mt-5">
-                {products.map((product) => (
-                    <Link key={product.productId} href={`/products/${product.productId}`}>
-                        <li className="cursor-pointer border p-4 my-2 product-link hover:bg-gray-100 transition duration-300">
-                            <p className="text-xl font-semibold">
-                                {product.name}
-                            </p>
-                            <p className="text-lg">Price: ${product.price.toFixed(2)}</p>
-                            <p className="text-lg">Stock Quantity: {product.stockQuantity}</p>
+            <section>
+                <ul>
+                    {products.map((product) => (
+                        <li key={product.productId} className="border p-4 my-2 hover:bg-gray-100 transition duration-300">
+                            <Link href={`/products/${product.productId}`} className="block cursor-pointer product-link">
+                                <h2 className="text-xl font-semibold">
+                                    {product.name}
+                                </h2>
+                                <p className="text-lg">Price: ${product.price.toFixed(2)}</p>
+                                <p className="text-lg">Stock Quantity: {product.stockQuantity}</p>
+                            </Link>
                         </li>
-                    </Link>
-                ))}
-            </ul>
-        </div>
+                    ))}
+                </ul>
+            </section>
+        </main>
     );
 };
 
