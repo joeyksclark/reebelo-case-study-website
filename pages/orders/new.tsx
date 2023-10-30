@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Product } from '../../util/types';
 
-const NewOrderPage: React.FC = () => {
-    const [customerName, setCustomerName] = useState<string>('');
-    const [selectedProducts, setSelectedProducts] = useState<{ product: Product; quantity: number }[]>(
-        []
-    );
+const useFetchProducts = (): Product[] => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
         fetch('/api/products')
@@ -18,14 +12,26 @@ const NewOrderPage: React.FC = () => {
             });
     }, []);
 
+    return products;
+};
+
+const NewOrderPage: React.FC = () => {
+    const [customerName, setCustomerName] = useState<string>('');
+    const [selectedProducts, setSelectedProducts] = useState<{ product: Product; quantity: number }[]>([]);
+    const products = useFetchProducts();
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
     const handleProductSelect = (productId: number) => {
         const selectedProduct = products.find((product) => product.productId === productId);
         if (selectedProduct) {
-            const existingIndex = selectedProducts.findIndex((item) => item.product.productId === productId);
-            if (existingIndex !== -1) {
-                const updatedProducts = [...selectedProducts];
-                updatedProducts[existingIndex].quantity += 1;
-                setSelectedProducts(updatedProducts);
+            const existingProduct = selectedProducts.find((item) => item.product.productId === productId);
+            if (existingProduct) {
+                setSelectedProducts((prevState) =>
+                    prevState.map((item) =>
+                        item.product.productId === productId ? {...item, quantity: item.quantity + 1} : item
+                    )
+                );
             } else {
                 setSelectedProducts([...selectedProducts, { product: selectedProduct, quantity: 1 }]);
             }
@@ -58,7 +64,8 @@ const NewOrderPage: React.FC = () => {
                 setSelectedProducts([]);
                 setErrorMessage(null);
             } else {
-                setErrorMessage('Failed to create the order');
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to create the order');
                 setSuccessMessage(null);
             }
         } catch (error) {
@@ -66,6 +73,14 @@ const NewOrderPage: React.FC = () => {
             setErrorMessage('Failed to create the order');
             setSuccessMessage(null);
         }
+    };
+
+    const handleQuantityChange = (productId: number, quantity: number) => {
+        setSelectedProducts((prevState) =>
+            prevState.map((item) =>
+                item.product.productId === productId ? {...item, quantity} : item
+            )
+        );
     };
 
     const totalPrice = selectedProducts.reduce(
