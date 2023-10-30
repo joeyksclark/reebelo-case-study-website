@@ -1,17 +1,22 @@
 import React from 'react';
 import Link from "next/link";
+import styles from './Footer.module.css';
 
 const Footer: React.FC = () => {
+    const currentYear = new Date().getFullYear();
+
     return (
-        <footer className="bg-gray-800 text-white py-4">
-            <div className="container mx-auto text-center">
-                <p>&copy; {new Date().getFullYear()} Nobody. No rights reserved.</p>
+        <footer className={styles.footer}>
+            <div className={styles.container}>
+                <p>&copy; {currentYear} Nobody. No rights reserved.</p>
                 <p>
-                    <Link href="/privacy-policy" className="text-blue-400 hover:underline">
+                    <Link href="/privacy-policy" passHref className={styles.footLink}>
                         Privacy Policy
-                    </Link>{' '}
-                    |{' '}
-                    <Link href="/terms-of-service" className="text-blue-400 hover:underline">
+                    </Link>
+                    {' '}
+                    |
+                    {' '}
+                    <Link href="/terms-of-service" passHref className={styles.footLink}>
                         Terms of Service
                     </Link>
                 </p>

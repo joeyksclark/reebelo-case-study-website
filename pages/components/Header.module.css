@@ -1,0 +1,45 @@
+.header {
+    background-color: #3b82f6;
+    padding: 1rem 0;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.875rem; /* 3xl */
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.logo:hover {
+    color: #9ca3af; /* gray-300 */
+}
+
+.navList {
+    display: flex;
+    gap: 1.5rem; /* space-x-6 equivalent */
+}
+
+.navItem {
+    list-style-type: none;
+}
+
+.navLink {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 500; /* font-medium */
+    color: #ffffff;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.navLink:hover {
+    color: #9ca3af; /* gray-300 */
+}

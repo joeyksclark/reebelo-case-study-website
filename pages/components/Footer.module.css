@@ -1,0 +1,20 @@
+.footer {
+    background-color: #2d3748; /* bg-gray-800 */
+    color: #ffffff; /* text-white */
+    padding: 1rem 0; /* py-4 */
+}
+
+.container {
+    margin: 0 auto; /* mx-auto */
+    text-align: center; /* text-center */
+}
+
+.footLink {
+    color: #4299e1; /* text-blue-400 */
+    text-decoration: none; /* remove underline by default */
+    transition: text-decoration 0.3s; /* smooth transition */
+}
+
+.footLink:hover {
+    text-decoration: underline; /* hover:underline */
+}
