@@ -30,11 +30,11 @@ export const findProductById = async (productId: number): Promise<Product | unde
 export const getProduct = async (productId: number): Promise<Product> => {
     const product = await findProductById(productId);
 
-    if (product) {
-        return product;
-    } else {
+    if (!product) {
         throw new Error(`Product with ID ${productId} doesn't exist.`);
     }
+
+    return product;
 };
 
 export const createProduct = async (name: string, price: number, stockQuantity: number): Promise<Product> => {
@@ -73,9 +73,9 @@ export const updateProduct = async (productId: number, name: string, price: numb
         throw new Error(`Error updating product: ${error.message}`);
     }
 
-    if (data && data[0]) {
-        return data[0] as Product;
-    } else {
-        throw new Error(`Error updating product with ID ${productId}.`);
+    if (!data || data.length === 0) {
+        throw new Error(`Product with ID ${productId} doesn't exist.`);
     }
+
+    return data[0] as Product;
 };
