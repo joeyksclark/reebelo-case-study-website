@@ -34,3 +34,32 @@ CREATE TABLE order_items (
   FOREIGN KEY (productId) REFERENCES products(productId)
 );
 ```
+
+## Placeholder Data:
+```sql
+INSERT INTO products (name, price, stockQuantity)
+VALUES
+    ('Product 1', 10.99, 100),
+    ('Product 2', 19.99, 50);
+```
+
+```sql
+INSERT INTO orders (customerName, totalPrice, status, shippingTrackingCompany, shippingTrackingNumber)
+VALUES
+    ('Joey', 61.96, 'Processing', NULL, NULL),
+    ('Nina', 39.98, 'Shipped', 'SendAirway', 'SE789012'),
+    ('Marika', 72.95, 'Delivered', 'ShipExpress', 'SE789012'),
+    ('Caitlin', 10.95, 'Canceled', 'iShipFast', '5819057849302');
+```
+
+```sql
+INSERT INTO order_items (orderId, productId, orderQuantity)
+VALUES
+    (1, 1, 2),
+    (1, 2, 1),
+    (2, 1, 2),
+    (2, 2, 1),
+    (3, 1, 3),
+    (3, 2, 2),
+    (4, 1, 1);
+```
