@@ -16,5 +16,5 @@ In this time-constrained project, I present a case study designed for evaluating
 
 ## To Test with Postman
 1. Startup the server locally using the directions above.
-2. Import the Postman collection file: `ReebeloCaseStudy.postman_collection.json`
+2. Import the Postman collection file: `ReebeloCaseStudy.postman_collection.json`. (TODO) Keep in mind you may need to initialize the database tables with sample data.
 3. Run the suite!
