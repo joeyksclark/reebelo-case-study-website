@@ -19,7 +19,7 @@ const OrdersPage: React.FC = () => {
 
             <ul className="mt-5">
                 {orders.map((order) => (
-                    <li key={order.orderId} className="mb-5 p-4 border rounded-md">
+                    <li key={order.orderId} className="mb-5 p-4 border rounded-md hover:bg-gray-100 transition duration-300">
                         <Link href={`/orders/${order.orderId}`} className="block">
                             <h2 className="text-2xl font-semibold">Order ID: {order.orderId}</h2>
                             <p className="text-lg">Customer Name: {order.customerName}</p>

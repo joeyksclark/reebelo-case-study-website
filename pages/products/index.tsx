@@ -20,7 +20,7 @@ const ProductsPage: React.FC = () => {
             <ul className="mt-5">
                 {products.map((product) => (
                     <Link key={product.productId} href={`/products/${product.productId}`}>
-                        <li className="cursor-pointer border p-4 my-2">
+                        <li className="cursor-pointer border p-4 my-2 product-link hover:bg-gray-100 transition duration-300">
                             <p className="text-xl font-semibold">
                                 {product.name}
                             </p>
