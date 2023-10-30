@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 
 const HomePage: React.FC = () => {
-    const [productCount, setProductCount] = useState<number>(0);
-    const [orderCount, setOrderCount] = useState<number>(0);
+    const [productCount, setProductCount] = useState<number | null>(null);
+    const [orderCount, setOrderCount] = useState<number | null>(null);
 
     useEffect(() => {
-        fetch('/api/products')
-            .then((response) => response.json())
-            .then((data) => {
-                setProductCount(data.length);
-            });
+        const fetchCounts = async () => {
+            try {
+                const [productResponse, orderResponse] = await Promise.all([
+                    fetch('/api/products'),
+                    fetch('/api/orders')
+                ]);
 
-        fetch('/api/orders')
-            .then((response) => response.json())
-            .then((data) => {
-                setOrderCount(data.length);
-            });
+                const products = await productResponse.json();
+                const orders = await orderResponse.json();
+
+                setProductCount(products.length);
+                setOrderCount(orders.length);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchCounts();
     }, []);
 
     return (
@@ -25,12 +31,12 @@ const HomePage: React.FC = () => {
 
             <div className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">Product Statistics</h2>
-                <p className="text-gray-700">Total Products: {productCount}</p>
+                <p className="text-gray-700">Total Products: {productCount !== null ? productCount : 'Loading...'}</p>
             </div>
 
             <div className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">Order Statistics</h2>
-                <p className="text-gray-700">Total Orders: {orderCount}</p>
+                <p className="text-gray-700">Total Orders: {orderCount !== null ? orderCount : 'Loading...'}</p>
             </div>
         </div>
     );

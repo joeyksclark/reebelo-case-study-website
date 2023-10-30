@@ -1,16 +1,11 @@
-import { NextPage } from 'next';
+import { AppProps } from 'next/app';
 
 import '../styles/global.css';
 import '../styles/poppins.css';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-type MyAppProps = {
-    Component: NextPage;
-    pageProps: any;
-};
-
-function MyApp({ Component, pageProps }: MyAppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
     return (
         <div>
             <Header />
